@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Legendary by the Numbers — A Pokémon Stats Story</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="viz-root">
+
+  <header class="page-header">
+    <h1>Legendary by the Numbers</h1>
+    <p class="subtitle">What actually separates Legendary Pokémon from the rest? A data story from Kaggle's <a href="https://www.kaggle.com/datasets/abcsds/pokemon" target="_blank" rel="noopener">Pokémon with Stats</a> dataset (800 Pokémon, Generations 1&ndash;6).</p>
+  </header>
+
+  <main>
+    <section class="scene-panel">
+      <div class="scene-meta">
+        <span class="scene-count" id="scene-count"></span>
+        <h2 id="scene-title"></h2>
+        <p id="scene-caption"></p>
+        <p class="explore-hint" id="explore-hint" hidden>🔍 This scene is free to explore — hover over any point to see that Pokémon's stats.</p>
+      </div>
+
+      <div class="chart-wrap">
+        <svg id="chart" viewBox="0 0 760 480" preserveAspectRatio="xMidYMid meet"></svg>
+        <div id="tooltip" class="tooltip" hidden></div>
+      </div>
+
+      <nav class="scene-nav">
+        <button id="prev-btn" type="button">&larr; Back</button>
+        <div class="scene-dots" id="scene-dots"></div>
+        <button id="next-btn" type="button">Next &rarr;</button>
+      </nav>
+    </section>
+  </main>
+
+  <footer class="page-footer">
+    <p>Data: <a href="https://www.kaggle.com/datasets/abcsds/pokemon" target="_blank" rel="noopener">Pokémon with Stats</a> (Kaggle, Alberto Barradas). Built with D3.js and d3-annotation.</p>
+  </footer>
+
+</div>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-svg-annotation@2.5.1/d3-annotation.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
