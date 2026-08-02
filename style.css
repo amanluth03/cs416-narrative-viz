@@ -134,6 +134,15 @@ svg#chart {
   font-size: 12px;
 }
 
+.legend-row {
+  cursor: pointer;
+}
+
+#filter-count {
+  fill: var(--muted);
+  font-size: 11px;
+}
+
 .dot-point {
   cursor: pointer;
 }

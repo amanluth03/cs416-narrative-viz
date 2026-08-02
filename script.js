@@ -23,7 +23,8 @@ const height = outerHeight - margin.top - margin.bottom;
 // -------------------- parameters (state) --------------------
 const state = {
   scene: 0,   // which scene is currently displayed
-  data: []    // parsed Pokémon rows
+  data: [],   // parsed Pokémon rows
+  legendFilter: { true: true, false: true } // scene 2: which legend groups are shown
 };
 
 // -------------------- scene definitions --------------------
@@ -249,7 +250,6 @@ function renderScatter(data) {
     .attr("cy", d => y(d.defense))
     .attr("r", 4.5)
     .attr("fill", d => d.legendary ? COLORS.orange : COLORS.blue)
-    .attr("fill-opacity", d => d.legendary ? 0.9 : 0.4)
     .attr("stroke", "#fcfcfb")
     .attr("stroke-width", 0.6)
     .on("mouseenter", (event, d) => showTooltip(event,
@@ -257,16 +257,24 @@ function renderScatter(data) {
     .on("mousemove", moveTooltip)
     .on("mouseleave", hideTooltip);
 
-  // legend
+  // legend — doubles as a filter: click a group to isolate it
   const legendData = [
-    { label: "Legendary", color: COLORS.orange },
-    { label: "Everyone else", color: COLORS.blue }
+    { key: true, label: "Legendary", color: COLORS.orange },
+    { key: false, label: "Everyone else", color: COLORS.blue }
   ];
   const legend = g.append("g").attr("transform", `translate(${width - 128}, 4)`);
-  const rows = legend.selectAll("g").data(legendData).join("g")
-    .attr("transform", (d, i) => `translate(0, ${i * 18})`);
+  const rows = legend.selectAll(".legend-row").data(legendData).join("g")
+    .attr("class", "legend-row")
+    .attr("transform", (d, i) => `translate(0, ${i * 18})`)
+    .on("click", (event, d) => {
+      state.legendFilter[d.key] = !state.legendFilter[d.key];
+      applyLegendFilter(g, data);
+    });
   rows.append("circle").attr("r", 5).attr("fill", d => d.color);
   rows.append("text").attr("class", "legend-label").attr("x", 12).attr("y", 4).text(d => d.label);
+
+  g.append("text").attr("class", "axis-label").attr("id", "filter-count")
+    .attr("x", width - 128).attr("y", 46).attr("text-anchor", "start");
 
   const standout = data.filter(d => d.legendary)
     .sort((a, b) => d3.descending(a.attack + a.defense, b.attack + b.defense))[0];
@@ -280,4 +288,20 @@ function renderScatter(data) {
     dx: -90, dy: -40,
     subject: { radius: 9 }
   }]);
+
+  state.legendFilter = { true: true, false: true };
+  applyLegendFilter(g, data);
+}
+
+function applyLegendFilter(g, data) {
+  g.selectAll(".dot-point")
+    .style("display", d => state.legendFilter[d.legendary] ? null : "none")
+    .attr("fill-opacity", d => d.legendary ? 0.9 : 0.4);
+
+  g.selectAll(".legend-row").style("opacity", d => state.legendFilter[d.key] ? 1 : 0.35);
+
+  g.select(".annotation-group").style("display", state.legendFilter[true] ? null : "none");
+
+  const visible = data.filter(d => state.legendFilter[d.legendary]).length;
+  g.select("#filter-count").text(`Showing ${visible} of ${data.length}`);
 }
