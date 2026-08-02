@@ -1,7 +1,10 @@
 // ---------------------------------------------------------------------------
 // Narrative visualization: "Legendary by the Numbers"
-// Structure: martini glass — scenes 0 and 1 are fixed/guided, scene 2 opens
-// up free exploration via hover tooltips.
+// Message: Legendary Pokémon dominate on average, but the category isn't a
+// guarantee — ordinary Pokémon overlap into legendary territory.
+// Structure: martini glass — scene 0 sets up the assumption, scene 1 reveals
+// the overlap, both fixed/guided. Scene 2 opens up free exploration (hover +
+// legend filter) so the reader can find the exceptions themselves.
 // ---------------------------------------------------------------------------
 
 const COLORS = {
@@ -30,20 +33,20 @@ const state = {
 // -------------------- scene definitions --------------------
 const scenes = [
   {
-    title: "Average Stats by Type",
-    caption: "Averaging every Pokémon's total base stats by primary type reveals a clear pecking order.",
-    render: renderTypeOverview,
-    explore: false
-  },
-  {
-    title: "Legendary vs. Everyone Else",
-    caption: "Split Pokémon into Legendary vs. everyone else, and the type differences from the last scene shrink next to this gap.",
+    title: "The Reputation",
+    caption: "Legendary Pokémon average far higher total stats than everyone else. That's the reputation, and it checks out.",
     render: renderLegendaryGap,
     explore: false
   },
   {
-    title: "Attack vs. Defense, Individually",
-    caption: "Every Pokémon plotted by Attack and Defense. Legendaries (orange) crowd the top right.",
+    title: "The Overlap",
+    caption: "But plot every Pokémon's total stats and the two groups aren't so separate — ordinary Pokémon reach into legendary territory.",
+    render: renderOverlapStrip,
+    explore: false
+  },
+  {
+    title: "Find the Exceptions",
+    caption: "Every Pokémon plotted by Attack and Defense. Some ordinary Pokémon (blue) hang with the legendaries (orange).",
     render: renderScatter,
     explore: true
   }
@@ -127,50 +130,7 @@ function hideTooltip() {
   tooltip.attr("hidden", true);
 }
 
-// -------------------- scene 0: average total stats by type --------------------
-function renderTypeOverview(data) {
-  const rolled = d3.rollups(data, v => d3.mean(v, d => d.total), d => d.type1)
-    .map(([type, avg]) => ({ type, avg }))
-    .sort((a, b) => d3.descending(a.avg, b.avg));
-
-  const x = d3.scaleLinear().domain([0, d3.max(rolled, d => d.avg)]).nice().range([0, width]);
-  const y = d3.scaleBand().domain(rolled.map(d => d.type)).range([0, height]).padding(0.25);
-
-  const g = chartGroup();
-
-  g.append("g").attr("class", "grid")
-    .call(d3.axisBottom(x).tickSize(height).tickFormat(""));
-
-  g.append("g").attr("class", "y-axis")
-    .call(d3.axisLeft(y).tickSize(0))
-    .call(sel => sel.select(".domain").remove());
-
-  g.append("g").attr("class", "x-axis")
-    .attr("transform", `translate(0,${height})`)
-    .call(d3.axisBottom(x).ticks(5));
-
-  const top = rolled[0];
-
-  g.selectAll(".bar").data(rolled).join("rect")
-    .attr("class", "bar")
-    .attr("y", d => y(d.type))
-    .attr("x", 0)
-    .attr("height", y.bandwidth())
-    .attr("width", d => x(d.avg))
-    .attr("fill", d => d.type === top.type ? COLORS.orange : COLORS.blue);
-
-  addAnnotations(g, [{
-    note: {
-      title: `${top.type} leads`,
-      label: `${top.avg.toFixed(0)} avg. total stats — highest of any type.`
-    },
-    x: x(top.avg), y: y(top.type) + y.bandwidth() / 2,
-    dx: -130, dy: -30,
-    subject: { radius: 10 }
-  }]);
-}
-
-// -------------------- scene 1: legendary vs non-legendary --------------------
+// -------------------- scene 0: legendary vs non-legendary --------------------
 function renderLegendaryGap(data) {
   const labels = { true: "Legendary", false: "Everyone Else" };
   const rolled = d3.rollups(data, v => d3.mean(v, d => d.total), d => d.legendary)
@@ -213,6 +173,57 @@ function renderLegendaryGap(data) {
     x: x(legendaryRow.avg), y: y(legendaryRow.legendary) + y.bandwidth() / 2,
     dx: -100, dy: -170,
     subject: { radius: 10 }
+  }]);
+}
+
+// -------------------- scene 1: beeswarm of every Pokémon's total stats --------------------
+function renderOverlapStrip(data) {
+  const x = d3.scaleLinear().domain([0, d3.max(data, d => d.total)]).nice().range([0, width]);
+  const legendaryRowY = height * 0.28;
+  const everyoneRowY = height * 0.74;
+
+  const g = chartGroup();
+
+  g.append("g").attr("class", "x-axis")
+    .attr("transform", `translate(0,${height})`)
+    .call(d3.axisBottom(x).ticks(6));
+
+  g.append("text").attr("class", "axis-label")
+    .attr("x", 0).attr("y", legendaryRowY - 16).text("Legendary");
+  g.append("text").attr("class", "axis-label")
+    .attr("x", 0).attr("y", everyoneRowY - 16).text("Everyone else");
+
+  // beeswarm: x is pinned to the real value, y is only nudged to avoid overlap
+  const nodes = data.map(d => Object.assign({}, d, { fx: x(d.total) }));
+  const simulation = d3.forceSimulation(nodes)
+    .force("y", d3.forceY(d => d.legendary ? legendaryRowY : everyoneRowY).strength(0.15))
+    .force("collide", d3.forceCollide(3.4))
+    .stop();
+  for (let i = 0; i < 200; i++) simulation.tick();
+
+  g.selectAll(".dot-point").data(nodes).join("circle")
+    .attr("class", "dot-point")
+    .attr("cx", d => d.fx)
+    .attr("cy", d => d.y)
+    .attr("r", 3.4)
+    .attr("fill", d => d.legendary ? COLORS.orange : COLORS.blue)
+    .attr("fill-opacity", d => d.legendary ? 0.9 : 0.45);
+
+  const weakestLegendary = d3.min(data.filter(d => d.legendary), d => d.total);
+  const overlapCount = data.filter(d => !d.legendary && d.total >= weakestLegendary).length;
+
+  g.append("line").attr("class", "threshold-line")
+    .attr("x1", x(weakestLegendary)).attr("x2", x(weakestLegendary))
+    .attr("y1", 0).attr("y2", height);
+
+  addAnnotations(g, [{
+    note: {
+      title: "The categories overlap",
+      label: `${overlapCount} ordinary Pokémon match or beat the weakest legendaries (${weakestLegendary} total stats).`
+    },
+    x: x(weakestLegendary), y: 0,
+    dx: -170, dy: 30,
+    subject: { radius: 8 }
   }]);
 }
 
@@ -276,16 +287,18 @@ function renderScatter(data) {
   g.append("text").attr("class", "axis-label").attr("id", "filter-count")
     .attr("x", 10).attr("y", 74).attr("text-anchor", "start");
 
-  const standout = data.filter(d => d.legendary)
-    .sort((a, b) => d3.descending(a.attack + a.defense, b.attack + b.defense))[0];
+  // spotlight an ordinary Pokémon that reaches into legendary territory
+  const weakestLegendaryTotal = d3.min(data.filter(d => d.legendary), d => d.total);
+  const standout = data.filter(d => !d.legendary && !d.name.includes("Mega") && d.total >= weakestLegendaryTotal)
+    .sort((a, b) => d3.descending(a.total, b.total))[0];
 
   addAnnotations(g, [{
     note: {
       title: standout.name,
-      label: `${standout.attack} Attack / ${standout.defense} Defense — one of the most dominant stat lines here.`
+      label: `${standout.total} total stats, no legendary status — matches the legendary tier.`
     },
     x: x(standout.attack), y: y(standout.defense),
-    dx: -5, dy: -95,
+    dx: -40, dy: -215,
     subject: { radius: 9 }
   }]);
 
@@ -300,7 +313,7 @@ function applyLegendFilter(g, data) {
 
   g.selectAll(".legend-row").style("opacity", d => state.legendFilter[d.key] ? 1 : 0.35);
 
-  g.select(".annotation-group").style("display", state.legendFilter[true] ? null : "none");
+  g.select(".annotation-group").style("display", state.legendFilter[false] ? null : "none");
 
   const visible = data.filter(d => state.legendFilter[d.legendary]).length;
   g.select("#filter-count").text(`Showing ${visible} of ${data.length}`);

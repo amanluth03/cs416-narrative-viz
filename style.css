@@ -118,6 +118,12 @@ svg#chart {
 
 .grid .domain { display: none; }
 
+.threshold-line {
+  stroke: var(--ink-secondary);
+  stroke-width: 1.2;
+  stroke-dasharray: 4,3;
+}
+
 .axis-label {
   fill: var(--ink-secondary);
   font-size: 12px;
