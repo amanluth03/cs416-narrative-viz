@@ -189,6 +189,10 @@ function renderOverlapStrip(data) {
     .call(d3.axisBottom(x).ticks(6));
 
   g.append("text").attr("class", "axis-label")
+    .attr("x", width).attr("y", height - 8).attr("text-anchor", "end")
+    .text("Total stats →");
+
+  g.append("text").attr("class", "axis-label")
     .attr("x", 0).attr("y", legendaryRowY - 16).text("Legendary");
   g.append("text").attr("class", "axis-label")
     .attr("x", 0).attr("y", everyoneRowY - 16).text("Everyone else");
@@ -219,7 +223,7 @@ function renderOverlapStrip(data) {
   addAnnotations(g, [{
     note: {
       title: "No title required",
-      label: `${overlapCount} ordinary Pokémon reach the legendary tier on their own.`
+      label: `${overlapCount} ordinary Pokémon score ${weakestLegendary}+ total stats, matching the weakest legendaries.`
     },
     x: x(weakestLegendary), y: 0,
     dx: -170, dy: 30,
