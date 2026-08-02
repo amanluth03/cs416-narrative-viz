@@ -4,7 +4,7 @@
 
 ## Messaging
 
-Some ordinary Pokémon are just as strong as Legendary Pokémon. They just don't have the title. Legendaries do dominate on average, but 48 ordinary Pokémon (6% of the roster) match or beat the weakest legendaries in total stats, no legendary status required.
+Some ordinary Pokémon are just as strong as Legendary Pokémon. They just don't have the title. Legendaries dominate on average, but 48 ordinary Pokémon (6% of the roster) match or beat the weakest legendaries in total stats.
 
 ## Narrative Structure
 
