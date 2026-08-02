@@ -8,11 +8,11 @@ Some ordinary Pokémon are just as strong as Legendary Pokémon. They just don't
 
 ## Narrative Structure
 
-Martini glass. Scenes 1 and 2 are strictly author-driven: Back/Next only, no hover or filtering, and each one states a single claim with a number behind it. Scene 1 sets up the reputation (legendaries win on average); scene 2 delivers the twist (the two groups overlap). Scene 3 is the bowl. The reader can hover any of 800 points for details and click the legend to filter to one group, with no further guidance beyond the opening scatter plot.
+Martini glass. Scenes 1 and 2 are strictly author-driven: Back/Next only, no hover or filtering, and each one states a single claim with a number behind it. Scene 1 sets up the reputation (legendaries win on average); scene 2 delivers the twist (the two groups overlap). Scene 3 is the bowl. It keeps the same fixed annotation as scenes 1 and 2, but now the reader can also hover any of 800 points for details and click the legend to filter to one group.
 
 ## Visual Structure
 
-Every scene shares one template: an HTML title/caption block above a fixed 760×480 SVG, same margins, same type, same two-color system (blue = ordinary, orange = legendary). That consistency lets the reader read a new scene without re-learning the chart. Each scene's single d3-annotation callout points straight at the number that proves that scene's claim, so the eye goes there first. Color is what carries the reader between scenes: the same blue/orange mapping from the bar chart in scene 1 reappears as the two rows in scene 2's beeswarm, then as the two groups in scene 3's scatter, so by scene 3 the color already means something before the reader touches anything.
+Every scene shares one template: an HTML title/caption block above a fixed 760×480 SVG, same margins, same typography, same two-color system (blue = ordinary, orange = legendary). That consistency lets the reader read a new scene without re-learning the chart. Each scene's single d3-annotation callout points straight at the number that proves that scene's claim, so the eye goes there first. Color is what carries the reader between scenes: the same blue/orange mapping from the bar chart in scene 1 reappears as the two rows in scene 2's beeswarm, then as the two groups in scene 3's scatter, so by scene 3 the color already means something before the reader touches anything.
 
 ## Scenes
 
@@ -24,7 +24,7 @@ Order follows the argument, not the data: state the assumption, complicate it wi
 
 ## Annotations
 
-All three scenes use the same d3-annotation template (`annotationCalloutCircle`): bold title, one short note line, thin connector, open circle on the subject, same font/ink/stroke throughout. Each annotation states the specific number driving that scene's claim (+220, 48, 670) instead of a generic label, so it argues the point rather than decorating the chart. Annotations are static within scenes 1 and 2, part of the author-driven stem. In scene 3, the annotation is the one piece of state that reacts to reader input: filtering out "Everyone else" hides it too, since its subject (Slaking, an ordinary Pokémon) belongs to that group.
+All three scenes use the same d3-annotation template (`annotationCalloutCircle`): bold title, one short note line, thin connector, open circle on the subject, same font/ink/stroke throughout. Each annotation states the specific number driving that scene's claim (+220, 48, 670) instead of a generic label, so it argues the point rather than decorating the chart. Annotations are static within scenes 1 and 2, part of the author-driven stem. In scene 3, the annotation is the one visual element that responds to reader input: filtering out "Everyone else" hides it too, since its subject (Slaking, an ordinary Pokémon) belongs to that group.
 
 ## Parameters
 
