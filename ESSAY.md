@@ -37,4 +37,4 @@ All three scenes use the same d3-annotation template: `annotationCalloutCircle`,
 - Hovering a scatter point (`mouseenter`/`mousemove`/`mouseleave`) shows/moves/hides the tooltip.
 - Clicking a legend row toggles `state.legendFilter` and calls `applyLegendFilter()`.
 
-Affordances: the scene counter and Back/Next are always visible, so navigation is obvious from scene 1. A pill reading "Free to explore" appears only in scene 3, telling the reader exactly when hover and filtering become available and not before. Legend rows use a pointer cursor and dim when toggled off, signaling they're clickable controls, not just a static key.
+Affordances: the scene counter and Back/Next are always visible, so navigation is obvious from scene 1. A pill reading "Hover for details, click legend to filter" appears only in scene 3, telling the reader exactly when those interactions become available and not before. Legend rows use a pointer cursor and dim when toggled off, signaling they're clickable controls, not just a static key.
