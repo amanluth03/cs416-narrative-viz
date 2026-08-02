@@ -262,7 +262,7 @@ function renderScatter(data) {
     { key: true, label: "Legendary", color: COLORS.orange },
     { key: false, label: "Everyone else", color: COLORS.blue }
   ];
-  const legend = g.append("g").attr("transform", `translate(${width - 128}, 4)`);
+  const legend = g.append("g").attr("transform", "translate(10, 32)");
   const rows = legend.selectAll(".legend-row").data(legendData).join("g")
     .attr("class", "legend-row")
     .attr("transform", (d, i) => `translate(0, ${i * 18})`)
@@ -274,7 +274,7 @@ function renderScatter(data) {
   rows.append("text").attr("class", "legend-label").attr("x", 12).attr("y", 4).text(d => d.label);
 
   g.append("text").attr("class", "axis-label").attr("id", "filter-count")
-    .attr("x", width - 128).attr("y", 46).attr("text-anchor", "start");
+    .attr("x", 10).attr("y", 74).attr("text-anchor", "start");
 
   const standout = data.filter(d => d.legendary)
     .sort((a, b) => d3.descending(a.attack + a.defense, b.attack + b.defense))[0];
@@ -285,7 +285,7 @@ function renderScatter(data) {
       label: `${standout.attack} Attack / ${standout.defense} Defense — one of the most dominant stat lines here.`
     },
     x: x(standout.attack), y: y(standout.defense),
-    dx: -220, dy: -125,
+    dx: -5, dy: -95,
     subject: { radius: 9 }
   }]);
 
