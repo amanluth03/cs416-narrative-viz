@@ -1,8 +1,8 @@
 // ---------------------------------------------------------------------------
 // Narrative visualization: "Legendary by the Numbers"
 // Message: Legendary Pokémon dominate on average, but the category isn't a
-// guarantee — ordinary Pokémon overlap into legendary territory.
-// Structure: martini glass — scene 0 sets up the assumption, scene 1 reveals
+// guarantee. Ordinary Pokémon overlap into legendary territory.
+// Structure: martini glass. Scene 0 sets up the assumption, scene 1 reveals
 // the overlap, both fixed/guided. Scene 2 opens up free exploration (hover +
 // legend filter) so the reader can find the exceptions themselves.
 // ---------------------------------------------------------------------------
@@ -40,12 +40,12 @@ const scenes = [
   },
   {
     title: "The Overlap",
-    caption: "But plot every Pokémon's total stats and the two groups aren't so separate — ordinary Pokémon reach into legendary territory.",
+    caption: "But plot every Pokémon's total stats and the two groups aren't so separate. Ordinary Pokémon reach into legendary territory.",
     render: renderOverlapStrip,
     explore: false
   },
   {
-    title: "Find the Exceptions",
+    title: "The Exceptions",
     caption: "Every Pokémon plotted by Attack and Defense. Some ordinary Pokémon (blue) hang with the legendaries (orange).",
     render: renderScatter,
     explore: true
@@ -268,7 +268,7 @@ function renderScatter(data) {
     .on("mousemove", moveTooltip)
     .on("mouseleave", hideTooltip);
 
-  // legend — doubles as a filter: click a group to isolate it
+  // legend that doubles as a filter: click a group to isolate it
   const legendData = [
     { key: true, label: "Legendary", color: COLORS.orange },
     { key: false, label: "Everyone else", color: COLORS.blue }
@@ -295,7 +295,7 @@ function renderScatter(data) {
   addAnnotations(g, [{
     note: {
       title: standout.name,
-      label: `${standout.total} total stats, no legendary status — matches the legendary tier.`
+      label: `${standout.total} total stats with no legendary status, right in the legendary range.`
     },
     x: x(standout.attack), y: y(standout.defense),
     dx: -40, dy: -215,
