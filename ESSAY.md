@@ -24,7 +24,7 @@ Order follows the argument, not the data: state the assumption, complicate it wi
 
 ## Annotations
 
-All three scenes use the same d3-annotation template: `annotationCalloutCircle`, bold title + one short note line, thin connector, open circle on the subject. Same font, ink color, and stroke everywhere. Each annotation states the specific number driving that scene's claim (+220, 48, 670) instead of a generic label, so it argues the point rather than decorating the chart. Annotations are static within scenes 1 and 2 (part of the author-driven stem). In scene 3, the annotation is the one piece of state that reacts to reader input: filtering out "Everyone else" hides it, since its subject (Slaking, an ordinary Pokémon) is no longer on screen. That's a deliberate signal that this exception belongs to the group the reader just hid.
+All three scenes use the same d3-annotation template (`annotationCalloutCircle`): bold title, one short note line, thin connector, open circle on the subject, same font/ink/stroke throughout. Each annotation states the specific number driving that scene's claim (+220, 48, 670) instead of a generic label, so it argues the point rather than decorating the chart. Annotations are static within scenes 1 and 2, part of the author-driven stem. In scene 3, the annotation is the one piece of state that reacts to reader input: filtering out "Everyone else" hides it too, since its subject (Slaking, an ordinary Pokémon) belongs to that group.
 
 ## Parameters
 
@@ -37,4 +37,4 @@ All three scenes use the same d3-annotation template: `annotationCalloutCircle`,
 - Hovering a scatter point (`mouseenter`/`mousemove`/`mouseleave`) shows/moves/hides the tooltip.
 - Clicking a legend row toggles `state.legendFilter` and calls `applyLegendFilter()`.
 
-Affordances: the scene counter and Back/Next are always visible, so navigation is obvious from scene 1. A pill reading "Hover for details, click legend to filter" appears only in scene 3, telling the reader exactly when those interactions become available and not before. Legend rows use a pointer cursor and dim when toggled off, signaling they're clickable controls, not just a static key.
+Affordances: the scene counter and Back/Next are always visible, so navigation is obvious from scene 1. A pill reading "Hover for details, click legend to filter" appears only in scene 3, so the reader knows exactly when those interactions unlock. Legend rows use a pointer cursor and dim when toggled off, signaling they're clickable controls, not just a static key.
