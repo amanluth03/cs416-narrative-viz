@@ -1,7 +1,7 @@
 // ---------------------------------------------------------------------------
 // Narrative visualization: "Legendary by the Numbers"
-// Message: Legendary Pokémon dominate on average, but the category isn't a
-// guarantee. Ordinary Pokémon overlap into legendary territory.
+// Message: Legendary Pokémon dominate on average, but some ordinary Pokémon
+// are just as strong. They just don't have the title.
 // Structure: martini glass. Scene 0 sets up the assumption, scene 1 reveals
 // the overlap, both fixed/guided. Scene 2 opens up free exploration (hover +
 // legend filter) so the reader can find the exceptions themselves.
@@ -34,19 +34,19 @@ const state = {
 const scenes = [
   {
     title: "The Reputation",
-    caption: "Legendary Pokémon average far higher total stats than everyone else. That's the reputation, and it checks out.",
+    caption: "On average, Legendary Pokémon have far higher total stats.",
     render: renderLegendaryGap,
     explore: false
   },
   {
     title: "The Overlap",
-    caption: "But plot every Pokémon's total stats and the two groups aren't so separate. Ordinary Pokémon reach into legendary territory.",
+    caption: "Some ordinary Pokémon reach that same range anyway, no legendary title required.",
     render: renderOverlapStrip,
     explore: false
   },
   {
     title: "The Exceptions",
-    caption: "Every Pokémon plotted by Attack and Defense. Some ordinary Pokémon (blue) hang with the legendaries (orange).",
+    caption: "Every Pokémon by Attack and Defense. Ordinary Pokémon (blue) can match legendaries (orange).",
     render: renderScatter,
     explore: true
   }
@@ -218,8 +218,8 @@ function renderOverlapStrip(data) {
 
   addAnnotations(g, [{
     note: {
-      title: "The categories overlap",
-      label: `${overlapCount} ordinary Pokémon match or beat the weakest legendaries (${weakestLegendary} total stats).`
+      title: "No title required",
+      label: `${overlapCount} ordinary Pokémon reach the legendary tier on their own.`
     },
     x: x(weakestLegendary), y: 0,
     dx: -170, dy: 30,
@@ -295,7 +295,7 @@ function renderScatter(data) {
   addAnnotations(g, [{
     note: {
       title: standout.name,
-      label: `${standout.total} total stats with no legendary status, right in the legendary range.`
+      label: `${standout.total} total stats, no legendary title needed.`
     },
     x: x(standout.attack), y: y(standout.defense),
     dx: -40, dy: -215,

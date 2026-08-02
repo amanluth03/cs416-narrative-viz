@@ -4,7 +4,7 @@
 
 ## Messaging
 
-"Legendary" is a lore label, not a guaranteed power tier. Legendary Pokémon do dominate on average, but the category leaks: 48 ordinary Pokémon (6% of the roster) match or beat the weakest legendaries in total stats.
+Some ordinary Pokémon are just as strong as Legendary Pokémon. They just don't have the title. Legendaries do dominate on average, but 48 ordinary Pokémon (6% of the roster) match or beat the weakest legendaries in total stats, no legendary status required.
 
 ## Narrative Structure
 
