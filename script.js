@@ -30,19 +30,19 @@ const state = {
 // -------------------- scene definitions --------------------
 const scenes = [
   {
-    title: "Not All Types Are Created Equal",
+    title: "Average Stats by Type",
     caption: "Averaging every Pokémon's total base stats by primary type reveals a clear pecking order.",
     render: renderTypeOverview,
     explore: false
   },
   {
-    title: "The Real Divide Is Legendary Status",
+    title: "Legendary vs. Everyone Else",
     caption: "Split Pokémon into Legendary vs. everyone else, and the type differences from the last scene shrink next to this gap.",
     render: renderLegendaryGap,
     explore: false
   },
   {
-    title: "Explore the Individuals",
+    title: "Attack vs. Defense, Individually",
     caption: "Every Pokémon plotted by Attack and Defense. Legendaries (orange) crowd the top right.",
     render: renderScatter,
     explore: true
