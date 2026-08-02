@@ -50,7 +50,7 @@ const scenes = [
 
 // -------------------- data load --------------------
 d3.csv("data/pokemon.csv", d => ({
-  name: d.Name.replace(/([a-z])(Mega |Primal )/, "$1 $2"),
+  name: d.Name.replace(/^[A-Za-z]+(Mega .+|Primal .+)$/, "$1"),
   type1: d["Type 1"],
   total: +d.Total,
   attack: +d.Attack,
