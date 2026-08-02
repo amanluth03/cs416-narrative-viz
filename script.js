@@ -285,7 +285,7 @@ function renderScatter(data) {
       label: `${standout.attack} Attack / ${standout.defense} Defense — one of the most dominant stat lines here.`
     },
     x: x(standout.attack), y: y(standout.defense),
-    dx: -90, dy: -40,
+    dx: -220, dy: -125,
     subject: { radius: 9 }
   }]);
 
